@@ -3,7 +3,8 @@ import { useEffect, useRef, useState } from 'react'
 export default function FourZeroFour() {
   const [blob, setBlob] = useState('')
   const [sentences, setSentences] = useState([])
-  const [longSentence, setLongSentence] = useState([])
+  const [longSentence, setLongSentence] = useState('')
+  const [suggestions, setSuggestions] = useState([])
 
   useEffect(() => {
     const lastChar = blob.charAt(blob.length - 1)
@@ -13,6 +14,25 @@ export default function FourZeroFour() {
       setSentences([])
     }
   }, [blob])
+
+  const getSuggestions = (sentence) => {
+    fetch('http://127.0.0.1:8912/?query=' + sentence, {
+      method: 'GET',
+      headers: {
+        'Access-Control-Allow-Origin': 'http://localhost:3000',
+        'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE',
+        'Access-Control-Allow-Headers': 'Content-Type',
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data)
+        setSuggestions([...suggestions, data])
+      })
+      .catch((error) => {
+        console.error('Error:', error)
+      })
+  }
 
   useEffect(() => {
     // Join the sentences into a single string
@@ -27,6 +47,7 @@ export default function FourZeroFour() {
 
       // Do something with the long sentences
       console.log('Long Sentences:', long)
+      getSuggestions(long)
       setLongSentence(long)
     }
   }, [sentences])
@@ -258,7 +279,7 @@ export default function FourZeroFour() {
             ></textarea>
           </div>
         </div>
-        {JSON.stringify(sentences)}
+        {JSON.stringify(suggestions)}
       </form>
     </>
   )
