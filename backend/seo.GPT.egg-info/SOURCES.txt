@@ -1,0 +1,6 @@
+setup.py
+seo.GPT.egg-info/PKG-INFO
+seo.GPT.egg-info/SOURCES.txt
+seo.GPT.egg-info/dependency_links.txt
+seo.GPT.egg-info/requires.txt
+seo.GPT.egg-info/top_level.txt
